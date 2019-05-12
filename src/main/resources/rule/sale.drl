@@ -1,0 +1,42 @@
+import java.util.*;
+import java.math.*;
+
+import com.fish.activiti6.task.bean.Sale;
+
+
+// 周六周日打九折
+rule "Sat. and Sun. 90%"
+    // no-loop和lock-on-active设置为true，则一个规则被触发后，其他规则(包括自身)将不会再次触发
+    no-loop true
+    lock-on-active true
+    salience 1
+    when
+        $s : Sale(getDayOfWeek() == 1 || getDayOfWeek() == 7)
+    then
+        $s.setDiscount (new BigDecimal(0.9));
+        update($s);
+end
+
+// 100元打八折
+rule "100 80%"
+    no-loop true
+    lock-on-active true
+    salience 2
+    when
+        $s : Sale (getTotal() >= 100)
+    then
+        $s.setDiscount(new BigDecimal(0.8));
+        update($s);
+end
+
+// 100元打八折
+rule "200 80%"
+    no-loop true
+    lock-on-active true
+    salience 3
+    when
+        $s : Sale (getTotal() >= 200)
+    then
+        $s.setDiscount(new BigDecimal(0.7));
+        update($s);
+end

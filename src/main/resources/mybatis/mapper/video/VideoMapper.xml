@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fish.activiti6.dao.VideoMapper">
+
+    <insert id="insertUploadVideo" useGeneratedKeys="true" keyProperty="id">
+       INSERT INTO upload_video (video_name, uploader, create_time)
+       VALUES (#{videoName}, #{uploader}, #{createTime})
+    </insert>
+
+    <update id="updateUploadVideo">
+        UPDATE upload_video
+        <set>
+            <if test="videoName != null and videoName != ''">video_name = #{videoName},</if>
+            <if test="processInstanceId != null and processInstanceId != ''">process_instance_id = #{processInstanceId},</if>
+        </set>
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+</mapper>
